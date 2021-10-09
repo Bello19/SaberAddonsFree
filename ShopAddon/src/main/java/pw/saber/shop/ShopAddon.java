@@ -29,13 +29,15 @@ public class ShopAddon extends FactionsAddon {
     @Override
     public void onEnable() {
         instance = this;
-
-        try {
-            FileUtil.ExportResource("/" + getAddonName().toLowerCase(Locale.ROOT) + ".yml");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         file = new File(FactionsPlugin.getInstance().getServer().getWorldContainer().getAbsolutePath() + "/plugins/Factions/configuration/addons/shop.yml");
+
+        if(!file.exists()) {
+            try {
+                FileUtil.ExportResource("/" + getAddonName().toLowerCase(Locale.ROOT) + ".yml");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         config = YamlConfiguration.loadConfiguration(file);
     }
 
