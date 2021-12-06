@@ -1,0 +1,21 @@
+############################################################
+# +------------------------------------------------------+ #
+# |                  Factions Wild                       | #
+# +------------------------------------------------------+ #
+############################################################
+Wild:
+  Enabled: true
+  minRange: 1000
+  maxRange: 6000
+  requirePlayerFaction: false #Makes it require a player to have a faction before executing /f wild
+  playSoundOnTeleport: true #Do We want a sound to happen when the player teleports
+  SoundType: 'BAT_TAKEOFF' #Sounds Can Be Found Here: https://github.com/CryptoMorin/XSeries/blob/master/src/main/java/com/cryptomorin/xseries/XSound.java
+  allowedWorlds: #Only players in these worlds will be allowed to execute /f wild
+    - 'world'
+    - 'someworldnamehere'
+  disabled-blocks: #Material Names Can Be Found Here: https://github.com/CryptoMorin/XSeries/blob/master/src/main/java/com/cryptomorin/xseries/XMaterial.java
+    - 'WATER'
+    - 'STATIONARY_WATER'
+    - 'STATIONARY_LAVA'
+    - 'LAVA'
+    - 'CACTUS'
