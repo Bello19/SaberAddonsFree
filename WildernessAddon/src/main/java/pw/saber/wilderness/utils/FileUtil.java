@@ -26,7 +26,7 @@ public class FileUtil {
             while ((readBytes = stream.read(buffer)) > 0) {
                 resStreamOut.write(buffer, 0, readBytes);
             }
-            Logger.print("SOTW File Successfully Transferred!", Logger.PrefixType.DEFAULT);
+            Logger.print("Wilderness File Successfully Transferred!", Logger.PrefixType.DEFAULT);
         } finally {
             stream.close();
             resStreamOut.close();

@@ -20,6 +20,7 @@ import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import pw.saber.wilderness.WildernessAddon;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,18 +39,18 @@ public class CmdWild extends FCommand {
     public CmdWild() {
         super();
         this.aliases.addAll(Aliases.wild);
-        worldsAllowed = FactionsPlugin.getInstance().getConfig().getStringList("Wild.allowedWorlds");
+        worldsAllowed = WildernessAddon.getInstance().getConfig().getStringList("Wild.allowedWorlds");
 
-        minRange = FactionsPlugin.getInstance().getConfig().getInt("Wild.minRange");
-        maxRange = FactionsPlugin.getInstance().getConfig().getInt("Wild.maxRange");
+        minRange = WildernessAddon.getInstance().getConfig().getInt("Wild.minRange");
+        maxRange = WildernessAddon.getInstance().getConfig().getInt("Wild.maxRange");
         disabledBlocks = new ArrayList<>();
-        for (String materialName : FactionsPlugin.getInstance().getConfig().getStringList("Wild.disabled-blocks")) {
+        for (String materialName : WildernessAddon.getInstance().getConfig().getStringList("Wild.disabled-blocks")) {
             if (XMaterial.matchXMaterial(materialName).get().parseMaterial() == null) continue;
             Logger.print("[Factions (Wild)] Adding " + materialName + " to disabled-blocks!", Logger.PrefixType.DEFAULT);
             disabledBlocks.add(XMaterial.matchXMaterial(materialName).get().parseMaterial());
         }
-        playSound = FactionsPlugin.getInstance().getConfig().getBoolean("Wild.playSoundOnTeleport");
-        soundEffect = XSound.matchXSound(FactionsPlugin.getInstance().getConfig().getString("Wild.SoundType")).get().parseSound();
+        playSound = WildernessAddon.getInstance().getConfig().getBoolean("Wild.playSoundOnTeleport");
+        soundEffect = XSound.matchXSound(WildernessAddon.getInstance().getConfig().getString("Wild.SoundType")).get().parseSound();
         this.requirements = new CommandRequirements.Builder(Permission.WILD)
                 .playerOnly()
                 .build();
@@ -99,7 +100,7 @@ public class CmdWild extends FCommand {
                     if (playSound) XSound.matchXSound(soundEffect).play(player.getLocation(), 1.0f, 0.67f);
                     context.player.teleport(new Location(world, (double) finalX + 0.5, y, (double) finalZ + 0.5));
                     context.msg(TL.COMMAND_WILD_SUCCESS);
-                }, FactionsPlugin.getInstance().getConfig().getLong("warmups.f-wild", 5));
+                }, WildernessAddon.getInstance().getConfig().getLong("warmups.f-wild", 5));
             } else {
                 context.player.teleport(new Location(world, (double) finalX + 0.5, y, (double) finalZ + 0.5));
             }

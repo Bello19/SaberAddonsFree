@@ -10,6 +10,7 @@ import pw.saber.wilderness.cmd.CmdWild;
 import pw.saber.wilderness.utils.FileUtil;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -19,7 +20,7 @@ public class WildernessAddon extends FactionsAddon {
 
     public FileConfiguration config;
 
-    public WildernessAddon instance;
+    public static WildernessAddon instance;
 
     public WildernessAddon(FactionsPlugin plugin) {
         super(plugin);
@@ -48,10 +49,10 @@ public class WildernessAddon extends FactionsAddon {
 
     @Override
     public Set<Listener> listenersToRegister() {
-        return null;
+        return Collections.emptySet();
     }
 
-    public WildernessAddon getInstance() {
+    public static WildernessAddon getInstance() {
         return instance;
     }
 
