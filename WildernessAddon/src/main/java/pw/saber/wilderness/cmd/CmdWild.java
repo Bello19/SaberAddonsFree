@@ -11,6 +11,7 @@ import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.util.Cooldown;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.util.TL;
@@ -25,7 +26,6 @@ import pw.saber.wilderness.WildernessAddon;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Level;
 
 public class CmdWild extends FCommand {
 
@@ -35,12 +35,15 @@ public class CmdWild extends FCommand {
     private final List<Material> disabledBlocks;
     private final boolean playSound;
     private final Sound soundEffect;
+    private final int costPerUse;
+    private final int cooldown;
 
     public CmdWild() {
         super();
         this.aliases.addAll(Aliases.wild);
         worldsAllowed = WildernessAddon.getInstance().getConfig().getStringList("Wild.allowedWorlds");
-
+        cooldown = WildernessAddon.getInstance().getConfig().getInt("Wild.cooldownTime");
+        costPerUse = WildernessAddon.getInstance().getConfig().getInt("Wild.costPerUse");
         minRange = WildernessAddon.getInstance().getConfig().getInt("Wild.minRange");
         maxRange = WildernessAddon.getInstance().getConfig().getInt("Wild.maxRange");
         disabledBlocks = new ArrayList<>();
@@ -74,6 +77,16 @@ public class CmdWild extends FCommand {
             return;
         }
 
+        if(costPerUse > 0 && !context.canAffordCommand(costPerUse, "teleport to wilderness.")) {
+            return;
+        }
+
+        if(cooldown > 0 && Cooldown.isOnCooldown(context.player, "fWild")) {
+            context.msg(TL.COMMAND_COOLDOWN);
+            return;
+        }
+
+
         Player player = context.player;
 
         for (int counter = 0; counter < 25; ++counter) {
@@ -100,6 +113,9 @@ public class CmdWild extends FCommand {
                     if (playSound) XSound.matchXSound(soundEffect).play(player.getLocation(), 1.0f, 0.67f);
                     context.player.teleport(new Location(world, (double) finalX + 0.5, y, (double) finalZ + 0.5));
                     context.msg(TL.COMMAND_WILD_SUCCESS);
+                    if(cooldown > 0) {
+                        Cooldown.setCooldown(context.player, "fWild", cooldown);
+                    }
                 }, WildernessAddon.getInstance().getConfig().getLong("warmups.f-wild", 5));
             } else {
                 context.player.teleport(new Location(world, (double) finalX + 0.5, y, (double) finalZ + 0.5));

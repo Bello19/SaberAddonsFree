@@ -7,6 +7,8 @@ Wild:
   Enabled: true
   minRange: 1000
   maxRange: 6000
+  cooldownTime: 60 #How much time the player will have to wait before executing f wild again. ## SET TO 0 TO DISABLE ##
+  costPerUse: 10000 #How much the player will be charged to use f wild. ## SET TO 0 TO DISABLE ##
   requirePlayerFaction: false #Makes it require a player to have a faction before executing /f wild
   playSoundOnTeleport: true #Do We want a sound to happen when the player teleports
   SoundType: 'BAT_TAKEOFF' #Sounds Can Be Found Here: https://github.com/CryptoMorin/XSeries/blob/master/src/main/java/com/cryptomorin/xseries/XSound.java
