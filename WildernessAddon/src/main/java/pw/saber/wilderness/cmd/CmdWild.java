@@ -1,7 +1,7 @@
 package pw.saber.wilderness.cmd;
 
-import com.cryptomorin.xseries.XMaterial;
-import com.cryptomorin.xseries.XSound;
+import com.massivecraft.factions.shade.xseries.XMaterial;
+import com.massivecraft.factions.shade.xseries.XSound;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
@@ -77,15 +77,14 @@ public class CmdWild extends FCommand {
             return;
         }
 
-        if(costPerUse > 0 && !context.canAffordCommand(costPerUse, "teleport to wilderness.")) {
-            return;
-        }
-
         if(cooldown > 0 && Cooldown.isOnCooldown(context.player, "fWild")) {
             context.msg(TL.COMMAND_COOLDOWN);
             return;
         }
 
+        if(costPerUse > 0 && !context.canAffordCommand(costPerUse, "teleport to wilderness.")) {
+            return;
+        }
 
         Player player = context.player;
 
@@ -113,13 +112,17 @@ public class CmdWild extends FCommand {
                     if (playSound) XSound.matchXSound(soundEffect).play(player.getLocation(), 1.0f, 0.67f);
                     context.player.teleport(new Location(world, (double) finalX + 0.5, y, (double) finalZ + 0.5));
                     context.msg(TL.COMMAND_WILD_SUCCESS);
+                    takeCost(context);
+
                     if(cooldown > 0) {
                         Cooldown.setCooldown(context.player, "fWild", cooldown);
                     }
                 }, WildernessAddon.getInstance().getConfig().getLong("warmups.f-wild", 5));
             } else {
                 context.player.teleport(new Location(world, (double) finalX + 0.5, y, (double) finalZ + 0.5));
+                takeCost(context);
             }
+
             return;
         }
         context.msg(TL.COMMAND_WILD_FAILED);
@@ -128,5 +131,9 @@ public class CmdWild extends FCommand {
     @Override
     public TL getUsageTranslation() {
         return TL.COMMAND_WILD_DESCRIPTION;
+    }
+
+    private void takeCost(CommandContext context){
+        if(costPerUse > 0){context.payForCommand(costPerUse, "teleport to wilderness.", "teleport to wilderness.");}
     }
 }
